@@ -1,0 +1,82 @@
+<div *ngIf="!loader">
+  <div *ngIf="token">
+    <div *ngIf="noCart">
+      <button (click)="goStartShopping()" type="button" class="btn btn-primary btn-lg btn-block">
+        Start shopping
+      </button>
+    </div>
+    <div *ngIf="!noCart">
+      <button (click)="goContinuShopping()" type="button" class="btn btn-primary btn-lg btn-block">
+        Continue shopping
+      </button>
+    </div>
+  </div>
+  <div *ngIf="!token">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div id="user-data">
+        <div class="form-group">
+          <label for="userUser">Email</label>
+          <input
+            class="form-control"
+            type="text"
+            id="userEmail"
+            name="userEmail"
+            placeholder="User Email"
+            formControlName="userEmail"
+          />
+          <span
+            class="text-danger"
+            *ngIf="
+              !loginForm.get('userEmail').valid &&
+              loginForm.get('userEmail').touched
+            "
+            >Pleasse enter valid name!</span
+          >
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            class="form-control"
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Password"
+            formControlName="password"
+          />
+          <span
+            class="text-danger"
+            *ngIf="
+              !loginForm.get('password').valid &&
+              loginForm.get('password').touched
+            "
+            >Pleasse enter valid password!</span
+          >
+          <small *ngIf="errorMassage" id="userDanger" class="text-danger">
+            Email or Password incorrect</small
+          >
+        </div>
+      </div>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!loginForm.valid"
+      >
+        Login
+      </button>
+    </form>
+    <button (click)="navigateToSignup()">signup</button>
+  </div>
+</div>
+<div *ngIf="loader">
+  <app-loader></app-loader>
+</div>
+<div *ngIf="!loader">
+  <p *ngIf="newClient">Welcome to your first purchase</p>
+</div>
+<div *ngIf="!loader">
+  <p *ngIf="!noCart">A cart is active</p>
+</div>
+<div *ngIf="lestDate">
+  <p>Lest order {{lestDate | json}}</p>
+</div>

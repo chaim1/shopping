@@ -1,0 +1,19 @@
+<nav class="navbar sticky-top navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img
+      src="./assets/images/shopping-online-header.jpg"
+      width="100px"
+      height=""
+      class="d-inline-block align-top"
+      alt=""
+    />
+    Bootstrap
+  </a>
+  <div *ngIf="userName[1]">
+    <p>welcome {{ userName[1] }}<a (click)="logoutUser()" class="btn btn-secondary"> LogOut </a></p>
+
+  </div>
+  <div *ngIf="!userName[1]">
+    <p>welcome guest <a (click)="conectClcik()" class="btn btn-secondary"> Conect </a></p>
+  </div>
+</nav>

@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-md-4">
+    <app-my-cart></app-my-cart>
+    {{ cart | json }}
+  </div>
+
+  <div class="col-md-8" *ngIf="!loader">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="loader">
+    <div class="row">
+      <div *ngIf="categorys" class="col-md-12">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li
+                class="nav-item active"
+                *ngFor="let category of categorys.Category"
+              >
+                <a
+                  class="nav-link btn btn-block hover"
+                  (click)="getProdByCategory(category.categoryName)"
+                  >{{ category.categoryName
+                  }}<span class="sr-only">(current)</span></a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div *ngIf="!NoProducts">
+        <div *ngIf="products">
+          <div *ngFor="let prod of products.product">
+            <div class="card-group">
+              <div class="card" style="width: 18rem;">
+                <img
+                  class="card-img-top"
+                  [src]="prod.image"
+                  alt="Card image cap"
+                />
+                <div class="card-body">
+
+                    <h5 class="card-title">{{ prod.name }}</h5>
+                    <p class="card-text">{{ prod.Description }}</p>
+                    <p class="card-text">{{ prod.price }}</p>
+                    Select Quantity<input
+                      #sum
+                      type="number"
+                      min="1"
+                      step="1"
+                      value="1"
+                      required
+                    />
+                    <button
+                      (click)="addToCart(prod, sum.value)"
+                      class="btn btn-primary"
+                      type="submit"
+                    >
+                      Add to cart
+                    </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="NoProducts">
+        <p>Sorry no product in this category</p>
+      </div>
+    </div>
+  </div>
+</div>

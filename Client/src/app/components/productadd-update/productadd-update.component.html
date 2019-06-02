@@ -1,0 +1,40 @@
+<form [formGroup]="ProductForm" (ngSubmit)="AddPruduct()">
+  <div>
+    <label for="ProductName">שם המתכון</label>
+    <input type="text" id="ProductName" formControlName="ProductName" />
+  </div>
+  <div>
+    <button type="button" (click)="filePicker.click()">בחר תמונה</button>
+    <input type="file" #filePicker (change)="onImagePicked($event)" />
+  </div>
+  <div
+    class="image-preview"
+    *ngIf="
+      imagePreview !== '' && imagePreview && ProductForm.get('image').valid
+    "
+  >
+    <img [src]="imagePreview" [alt]="ProductForm.value.title" />
+  </div>
+  <div>
+    <label for="price">Price</label>
+    <input type="number" id="price" formControlName="price" />
+  </div>
+  <div>
+    <label for="Description">Description</label>
+    <textarea
+      type="text"
+      id="Description"
+      formControlName="Description"
+    ></textarea>
+  </div>
+  <div class="form-group" *ngIf="categorys">
+      <label for="categoryName">Category</label>
+      <select formControlName="categoryName" class="form-control" id="categoryName">
+        <option *ngFor="let category of categorys.Category" [value]="category.categoryName">{{category.categoryName}}</option>
+      </select>
+      <button (click)=navigateToAddCategory()>Add new Category</button>
+    </div> 
+  <div>
+    <button type="submit">{{ProductBootun}}</button>
+  </div>
+</form>

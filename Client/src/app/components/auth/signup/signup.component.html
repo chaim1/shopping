@@ -1,0 +1,185 @@
+
+<div class="row mx-auto container-fluid">
+  <div class="col-md-12 border ">
+    <form [formGroup]="signupForm" (ngSubmit)="onNextSignup()">
+      <div *ngIf="!stepTow">
+        <div class="form-group">
+          <label for="userId">ID</label>
+          <input
+            type="number"
+            class="form-control col-md-5"
+            id="userId"
+            aria-describedby="emailHelp"
+            formControlName="userID"
+            placeholder="Enter ID"
+            required
+          />
+          <small
+            *ngIf="errotIdUsed"
+            id="userDanger"
+            class="text-danger"
+            > ID already used </small
+          >
+          <small
+            *ngIf="
+              !signupForm.get('userID').valid &&
+              signupForm.get('userID').touched
+            "
+            id="userDanger"
+            class="text-danger"
+            > This line is required. </small
+          >
+        </div>
+        <div class="form-group">
+          <label for="userEmail">Email address</label>
+          <input
+            type="email"
+            class="form-control col-md-5"
+            id="userEmail"
+            aria-describedby="emailHelp"
+            placeholder="Enter email"
+            formControlName="userEmail"
+            required
+            email
+          />
+          <small
+            *ngIf="
+              !signupForm.get('userEmail').valid &&
+              signupForm.get('userEmail').touched
+            "
+            id="userDanger"
+            class="text-danger"
+            >Please enter a valid enamel.</small
+          >
+          <small
+            *ngIf="errorPwdUsed"
+            id="userDanger"
+            class="text-danger"
+            > email already used </small
+          >
+        </div>
+        <div class="form-group">
+          <label for="userPassword1">Password</label>
+          <input
+            type="password"
+            class="form-control col-md-5"
+            id="userPassword1"
+            placeholder="Password"
+            formControlName="userPwd1"
+            required
+          />
+          <small
+            *ngIf="
+              !signupForm.get('userPwd1').valid &&
+              signupForm.get('userPwd1').touched
+            "
+            id="userDanger"
+            class="text-danger"
+            >This line is required.</small
+          >
+        </div>
+        <div class="form-group">
+          <label for="userPassword2">Confirm Password</label>
+          <input
+            type="password"
+            class="form-control col-md-5"
+            id="userPassword2"
+            placeholder="Password"
+            formControlName="userPwd2"
+            required
+          />
+          <small *ngIf="passwordConfigValid" id="userDanger" class="text-danger"
+            >Passwords do not match.</small
+          >
+        </div>
+        <button
+          [disabled]="!signupForm.valid"
+          type="submit"
+          class="btn btn-primary"
+        >
+          Next
+        </button>
+      </div>
+    </form>
+
+    <form [formGroup]="signupFormStepTow" (ngSubmit)="onFinalSignup()">
+      <div *ngIf="stepTow">
+        <div class="form-group">
+          <label for="SelectCity">Select City</label>
+          <select
+            formControlName="userCity"
+            class="form-control col-md-5"
+            id="SelectCity"
+          >
+            <option *ngFor="let city of citys" [value]="city.english_name">{{
+              city.english_name
+            }}</option>
+          </select>
+          <small
+            *ngIf="
+              !signupFormStepTow.get('userCity').valid &&
+              signupFormStepTow.get('userCity').touched
+            "
+            id="userDanger"
+            class="text-danger"
+            >This line is required.</small
+          >
+        </div>
+        <div class="form-group">
+          <label for="userId">Address</label>
+          <input
+            type="text"
+            class="form-control col-md-5"
+            id="userAddress"
+            aria-describedby="AddressHelp"
+            formControlName="userAddress"
+            placeholder="Enter Address"
+            required
+          />
+          <small
+            *ngIf="
+              !signupFormStepTow.get('userAddress').valid &&
+              signupFormStepTow.get('userAddress').touched
+            "
+            id="userDanger"
+            class="text-danger"
+            >This line is required.</small
+          >
+        </div>
+        <div class="form-group">
+          <label for="userName">Full Name</label>
+          <input
+            type="text"
+            class="form-control col-md-5"
+            id="userName"
+            aria-describedby="nameHelp"
+            formControlName="fullName"
+            placeholder="Full Name"
+            required
+          />
+          <small
+            *ngIf="
+              !signupFormStepTow.get('fullName').valid &&
+              signupFormStepTow.get('fullName').touched
+            "
+            id="userDanger"
+            class="text-danger"
+            >This line is required.</small
+          >
+        </div>
+        <button
+          [disabled]="!signupFormStepTow.valid"
+          type="submit"
+          class="btn btn-primary"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+
+    <button (click)="navigateToLogin()">Login</button>
+    <div *ngIf="loader">
+      <app-loader></app-loader>
+    </div>
+  </div>
+</div>
