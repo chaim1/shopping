@@ -25,6 +25,9 @@ export class AuthUserService extends BehaviorSubject<any> {
     })
   }
   returnUserLoged(){
+    if(window.localStorage.getItem('userToken')==undefined){
+      this.isLoged = false;
+    }
     return this.isLoged;
   }
   logOutUser(){

@@ -73,13 +73,12 @@ router.get("/getCart", function(req, res) {
 });
 
 router.post("/addProd", (req, res, next) => {
-  console.log(req.body);
-
   Cart.findOneAndUpdate(
     { _id: req.body.cartId },
     {   status:2,
       $push: {
         products: {
+          prodImage: req.body.prodImage,
           productId: req.body.prodId,
           name: req.body.prodName,
           sum: req.body.prodSm,
@@ -101,34 +100,24 @@ router.post("/addProd", (req, res, next) => {
   );
 });
 
-// router.post("/login", (req, res, next) => {
-//   let fetchedUser;
-//   User.findOne({ email: req.body.userEmail })
-//     .then(user => {
-//       if (!user) {
-//         return res.status(203).json({
-//           message: "Auth failed"
-//         });
-//       }
-//       fetchedUser = user;
-//       return bcrypt.compare(req.body.password, user.password);
-//     })
-//     .then(result => {
-//       if (!result) {
-//         return res.status(203).json({
-//           message: "Auth failed"
-//         });
-//       }
-//       res.status(200).json({
-//         message: "ok",
-//         token: fetchedUser.tokens[0].token
-//       });
-//     })
-//     .catch(err => {
-//       return res.status(203).json({
-//         message: "Invalid authentication credentials!"
-//       });
-//     });
-// });
+
+router.post("/updateStatus", (req, res, next) => {
+  
+  Cart.findOneAndUpdate(
+    { _id: req.body.cartID },
+    {$set:{ status: 3}},
+    { new: true },
+    (err, result) => {
+      if (err) {
+        res.status(500).json({
+          message: "error"
+        });
+      }
+      res.status(201).json({
+        message: "prod in!"
+      });
+    }
+  );
+});
 
 module.exports = router;

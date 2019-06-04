@@ -23,5 +23,8 @@ export class CartService {
   addProdToCart(prodData){
     return this.httpClient.post(environment.uri+'Cart/addProd',prodData);
   }
+  addCartStatusOrder(cartID){
+    return this.httpClient.post(environment.uri+'Cart/updateStatus',{cartID:cartID})
+  }
 
 }

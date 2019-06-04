@@ -6,6 +6,7 @@ import { EnterToAppComponent } from './components/enter-to-app/enter-to-app.comp
 import { ShoppingPageComponent } from './components/shopping-page/shopping-page.component';
 import { ProductaddUpdateComponent } from './components/productadd-update/productadd-update.component';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
+import { OrderComponent } from './components/order/order.component';
 
 const routes: Routes = [
   {path: '', component: EnterToAppComponent, pathMatch: 'full'},
@@ -13,7 +14,8 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'shopping/:cartID', component: ShoppingPageComponent, canActivate:[NoLoginGuard]},
   {path: 'admin-product', component: ProductaddUpdateComponent},
-  {path: 'add-category', component: AddCategoryComponent, canActivate:[NoLoginGuard]}
+  {path: 'add-category', component: AddCategoryComponent, canActivate:[NoLoginGuard]},
+  {path: 'order/:cartID', component: OrderComponent, canActivate:[NoLoginGuard]}
 ];
 
 @NgModule({

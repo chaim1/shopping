@@ -78,5 +78,5 @@
   <p *ngIf="!noCart">A cart is active</p>
 </div>
 <div *ngIf="lestDate">
-  <p>Lest order {{lestDate | json}}</p>
+  <p>Lest order was made on {{lestDate.dateOrder}} and sent to the street {{lestDate.street}} at a price {{lestDate.finalPrice }}</p>
 </div>

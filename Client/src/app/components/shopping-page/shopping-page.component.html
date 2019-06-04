@@ -1,7 +1,22 @@
 <div class="row">
-  <div class="col-md-4">
+  <div *ngIf="cart" class="col-md-4">
     <app-my-cart></app-my-cart>
-    {{ cart | json }}
+    <div *ngFor="let prod of cart.cart[0].products">
+      <div>
+        <img [src]="prod.prodImage" alt="">
+      </div>
+      <div>
+        <p>{{prod.name}}</p>
+      </div>
+      <div>Quantity:
+        {{ prod.sum}}
+      </div>
+      <div>
+        Price: {{ prod.price*prod.sum}}
+      </div>
+    </div>
+    <div >Total price: {{ TotalPrice}}</div>
+    <div><button (click)="GoToPay(cart.cart[0]._id)">Go to pay</button></div>
   </div>
 
   <div class="col-md-8" *ngIf="!loader">

@@ -44,7 +44,8 @@ multer({ storage: storage }).single("image"),
     image: url + "/images/" + req.file.filename,
     Description: req.body.Description,
     price: req.body.price,
-    category: req.body.category
+    category: req.body.category,
+    sum: req.body.sum
   });
   product.save()
   .then(createdProd => {

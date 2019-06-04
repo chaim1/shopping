@@ -4,6 +4,7 @@ import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginService } from 'src/app/services/login.service';
 import { AuthUserService } from 'src/app/services/auth-user.service';
 import { CartService } from 'src/app/services/cart.service';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
   lestDate;
 
 
-  constructor(private router: Router, private loginService: LoginService, private authUserService: AuthUserService, private cartService: CartService) {
+  constructor(private router: Router, private loginService: LoginService, private authUserService: AuthUserService, private cartService: CartService, private orderService: OrderService) {
     this.getItem('userToken').then(res => {
       res ? this.getUserByToken(res) : this.loader = false;
     })
@@ -45,12 +46,14 @@ export class LoginComponent implements OnInit {
     this.loginService.loginUser(this.loginForm.value).subscribe(res => {
       this.loader = false;
       res.message == 'ok' ? this.userConected = true : this.errorMassage = true;
-      window.localStorage.setItem('userToken', res.token);
-      this.router.navigate(['home']);
-      setTimeout(() => {
-        this.router.navigate(['/']);
-        this.authUserService.checkLoged();
-      }, 1)
+      if(res.token !== undefined){
+        window.localStorage.setItem('userToken', res.token);
+        this.router.navigate(['home']);
+        setTimeout(() => {
+          this.router.navigate(['/']);
+          this.authUserService.checkLoged();
+        }, 1)
+      }
     })
   }
   getItem(key) {
@@ -102,9 +105,17 @@ export class LoginComponent implements OnInit {
     for(let i = 0; i < res.cart.length; i++){
       if(res.cart[i].status == 3){
         if(!this.lestDate){
-          this.lestDate = res.cart[i];
+          this.orderService.getOrderByCart(res.cart[i]._id).subscribe(res=>{
+            this.lestDate  = res.order[0];
+            console.log(res.order[0]);
+          })
+          // this.lestDate = res.cart[i];
         }else if(res.cart[i].time> this.lestDate.time){
-          this.lestDate = res.cart[i];
+          this.orderService.getOrderByCart(res.cart[i]._id).subscribe(res=>{
+            this.lestDate  = res.order[0];
+            console.log(res.order[0]);
+
+          })
         }
       }
     }

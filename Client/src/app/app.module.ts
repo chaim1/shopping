@@ -18,6 +18,7 @@ import { MyCartComponent } from './components/my-cart/my-cart.component';
 import { ProductaddUpdateComponent } from './components/productadd-update/productadd-update.component';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { OrderComponent } from './components/order/order.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     MyCartComponent,
     ProductaddUpdateComponent,
     AddCategoryComponent,
-    LoaderComponent
+    LoaderComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,

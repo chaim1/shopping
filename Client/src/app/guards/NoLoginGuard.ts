@@ -15,7 +15,7 @@ export class NoLoginGuard implements CanActivate {
     state: RouterStateSnapshot) {
       const logged = this.authUserService.returnUserLoged();
       if (!logged) {
-        this.router.navigate(['']);
+        this.router.navigate(['/']);
       }
       return logged;
   }
