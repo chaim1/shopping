@@ -20,8 +20,8 @@ export class HeaderComponent implements OnInit {
     this.authUserService.logOutUser();
     this.router.navigate(['home'])
     setTimeout(() => {
-      this.router.navigate([''])
-    }, 1)
+      this.router.navigate(['/'])
+    }, 100)
     this.userName = false;
   }
   ngOnInit() {

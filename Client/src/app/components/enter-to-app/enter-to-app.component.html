@@ -1,7 +1,7 @@
 <!-- <app-loader></app-loader> -->
 <div class="row container-fluid mx-auto">
-  <app-login class="border col-md-5"></app-login>
-  <div class="border col-md-4 text-center">
+  <app-login class=" col-md-5"></app-login>
+  <div class=" col-md-4 text-center">
     <img
       src="./assets/images/shopping-online.jpeg"
       class="img-fluid img-thumbnail"
@@ -19,9 +19,8 @@
       accusantium placeat quaerat fuga, odit, ab nobis debitis.
     </p>
   </div>
-  <div class="col-md-3 border">
-    <p>Available products in our store:- {{ numProducts }}</p>
-    <br />
-    <p>Number of orders submitted in our store:- {{ numCarts }}</p>
+  <div class="divInfo text-center col-md-3">
+    <p class="infoText pt-3">Available products in our store: {{ numProducts }}</p>
+    <p class="infoText pt-1 text-center">Number of orders submitted in our store: {{ numCarts }}</p>
   </div>
 </div>

@@ -19,7 +19,10 @@ export class OrderComponent implements OnInit {
   userCity;
   userStreet;
   numCradit = 0;
+  loader;
+  finish;
   constructor(private activatedRoute: ActivatedRoute, private cartService: CartService, private router: Router, private authUserService: AuthUserService, private orderService: OrderService) {
+    this.loader = true;
     this.activatedRoute.params.subscribe(paramsRes => {
       if (paramsRes.cartID) {
         this.cartId = paramsRes.cartID;
@@ -28,6 +31,7 @@ export class OrderComponent implements OnInit {
           for (let i = 0; i < res.cart[0].products.length; i++) {
             this.TotalPrice += (res.cart[0].products[i].sum * res.cart[0].products[i].price);
           }
+          this.loader =  false;
         })
       }
     });
@@ -43,11 +47,13 @@ export class OrderComponent implements OnInit {
     });
   }
   onOrder() {
+    this.loader = true;
     let number = this.orderForm.value.userCradit.toString();
     this.orderService.createOrder({ idClient: this.userId, idCart: this.cartId, finalPrice: this.TotalPrice, city: this.orderForm.value.userCity, street: this.orderForm.value.userStreet, dateOrder: this.orderForm.value.userDate, craditCard: Number(number.substring((number.length - 4), number.length)) }).subscribe(res=>{
       console.log(res);
       this.cartService.addCartStatusOrder(this.cartId).subscribe(res=>{
-        console.log(res);
+        this.finish = true;
+        this.loader = false;
       })
     })
   }

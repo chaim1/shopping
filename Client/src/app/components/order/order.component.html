@@ -1,62 +1,83 @@
-<div class="row">
-  <div *ngIf="cart" class="col-md-6">
-    <div><button (click)="backToShop()">Back to shop</button></div>
-    <div *ngFor="let prod of cart.cart[0].products">
-      <div>
-        <img [src]="prod.prodImage" alt="" />
-      </div>
-      <div>
-        <p>{{ prod.name }}</p>
-      </div>
-      <div>
-        Quantity:
-        {{ prod.sum }}
-      </div>
-      <div>Price: {{ prod.price * prod.sum }}</div>
-    </div>
-    <div>Total price: {{ TotalPrice }}</div>
+<div *ngIf="!finish">
+  <div *ngIf="loader">
+    <app-loader></app-loader>
   </div>
-  <div class="col-md-6">
-    <form [formGroup]="orderForm" (ngSubmit)="onOrder()">
-      <div id="user-data">
-        <div class="form-group">
-          <label for="userUser">City</label>
-          <input
-            class="form-control"
-            type="text"
-            id="userCity"
-            name="userCity"
-            placeholder="City"
-            formControlName="userCity"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="userUser">Street</label>
-          <input
-            class="form-control"
-            type="text"
-            id="userStreet"
-            name="userStreet"
-            placeholder="Street"
-            formControlName="userStreet"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="userUser">Date</label>
-          <input
-            class="form-control"
-            type="date"
-            id="userDate"
-            name="userDate"
-            placeholder="Date"
-            formControlName="userDate"
-            required
-          />
+  <div *ngIf="!loader" class="row">
+    <div *ngIf="cart" class="col-md-6">
+      <div>
+        <button
+          type="button"
+          class="btn btn-info btn-lg btn-block"
+          (click)="backToShop()"
+        >
+          Back to shop
+        </button>
+      </div>
+      <hr />
+      <h5 class="text-center">Data cart</h5>
+
+      <div *ngFor="let prod of cart.cart[0].products">
+        <div class="prodCart">
+          <div class="ml-5">
+            <img [src]="prod.prodImage" alt="" />
+          </div>
+          <div class="float-left ml-5">
+            <p>{{ prod.name }}</p>
+          </div>
+          <div class="float-left ml-1">
+            Quantity:
+            {{ prod.sum }}
+          </div>
+          <div class="text-center float-left ml-1">Price: {{ prod.price * prod.sum }}</div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="pt-3">
+        <h6 class="pt-3 mb-2 bg-info text-white">Total price: {{ TotalPrice }}</h6>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <hr />
+      <h5 class="text-center">Data order</h5>
+      <form [formGroup]="orderForm" (ngSubmit)="onOrder()">
+        <div id="user-data">
+          <div class="form-group">
+            <label for="userUser">City</label>
+            <input
+              class="form-control"
+              type="text"
+              id="userCity"
+              name="userCity"
+              placeholder="City"
+              formControlName="userCity"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="userUser">Street</label>
+            <input
+              class="form-control"
+              type="text"
+              id="userStreet"
+              name="userStreet"
+              placeholder="Street"
+              formControlName="userStreet"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="userUser">Date</label>
+            <input
+              class="form-control"
+              type="date"
+              id="userDate"
+              name="userDate"
+              placeholder="Date"
+              formControlName="userDate"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group">
           <label for="userUser">Cradit card</label>
           <input
             max="16"
@@ -70,12 +91,16 @@
             required
           />
         </div>
-      <button
-        class="btn btn-primary"
-        type="submit"
-      >
-        Pay
-      </button>
-    </form>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">
+          Pay
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div *ngIf="finish">
+  <div class="finish botder">
+    <h5 class="text-center">Thank you for purchasing our website and we look forward to serving you again</h5>
+    <button class="ml-3 btn btn-info" >Download a receipt</button>
   </div>
 </div>

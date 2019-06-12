@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   lastOrder: boolean = false;
   cartId;
   lestDate;
-
+  helpMasage;
 
   constructor(private router: Router, private loginService: LoginService, private authUserService: AuthUserService, private cartService: CartService, private orderService: OrderService) {
     this.getItem('userToken').then(res => {
@@ -45,29 +45,43 @@ export class LoginComponent implements OnInit {
     this.loader = true;
     this.loginService.loginUser(this.loginForm.value).subscribe(res => {
       this.loader = false;
+
       res.message == 'ok' ? this.userConected = true : this.errorMassage = true;
       if(res.token !== undefined){
         window.localStorage.setItem('userToken', res.token);
-        this.router.navigate(['home']);
-        setTimeout(() => {
-          this.router.navigate(['/']);
-          this.authUserService.checkLoged();
-        }, 1)
-      }
-    })
-  }
-  getItem(key) {
-    return Promise.resolve().then(() => {
-      return localStorage.getItem(key);
-    });
-  }
-  getUserByToken(token: string) {
-    this.loginService.userInToken(token).subscribe(res => {
-      if (res.message == "good") {
-        this.createCart(res);
-        this.authUserService.setUserId(res.useId);
+        if(res.role==3){
+          this.authUserService.setRule(res.role);
+          this.authUserService.userName.push(String(res.name));
+          this.router.navigate(['admin-product']);
+        }else{
+          this.router.navigate(['home']);
+          setTimeout(() => {
+            this.router.navigate(['/']);
+            this.authUserService.checkLoged();
+          }, 1)}
+        }
+      })
+    }
+    getItem(key) {
+      return Promise.resolve().then(() => {
+        return localStorage.getItem(key);
+      });
+    }
+    getUserByToken(token: string) {
+      this.loginService.userInToken(token).subscribe(res => {
+
+        if (res.message == "good") {
+          this.helpMasage = true;
+          this.authUserService.setRule(res.role);
+          if(res.role == 3){
+            this.authUserService.userName.push(String(res.name));
+            this.router.navigate(['admin-product']);
+            this.authUserService.setUserId(res.useId);
+          }else{
+            this.createCart(res);
+            this.authUserService.setUserId(res.useId);
         this.authUserService.userName.push(String(res.name));
-        this.token = window.localStorage.getItem('userToken');
+        this.token = window.localStorage.getItem('userToken');}
       } else {
         this.loader = false;
       }
@@ -107,14 +121,11 @@ export class LoginComponent implements OnInit {
         if(!this.lestDate){
           this.orderService.getOrderByCart(res.cart[i]._id).subscribe(res=>{
             this.lestDate  = res.order[0];
-            console.log(res.order[0]);
           })
           // this.lestDate = res.cart[i];
         }else if(res.cart[i].time> this.lestDate.time){
           this.orderService.getOrderByCart(res.cart[i]._id).subscribe(res=>{
             this.lestDate  = res.order[0];
-            console.log(res.order[0]);
-
           })
         }
       }

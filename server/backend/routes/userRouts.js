@@ -7,8 +7,7 @@ const User = require("../models/userModel");
 const router = express.Router();
 
 router.post("/signup", (req, res, next) => {
-  console.log(123);
-  
+
   req.body.userPwd1 !== req.body.userPwd2? res.status(500).json({ message: "password" }): "";
   bcrypt.hash(req.body.userPwd1, 10).then(hash => {
     const user = new User({
@@ -33,7 +32,7 @@ router.post("/signup", (req, res, next) => {
           (err, result) => {
             if (err) {
               res.status(500).json({
-                message: "Invalid authentication credentials!"
+                message: "Invalid authentication credentials!1"
               });
             }
             res.status(201).json({
@@ -47,8 +46,10 @@ router.post("/signup", (req, res, next) => {
         );
       })
       .catch(err => {
+        console.log(err);
+        
         res.status(500).json({
-          message: "Invalid authentication credentials!"
+          message: "Invalid authentication credentials!2"
         });
       }); 
   });
@@ -72,15 +73,17 @@ router.post("/login", (req, res, next) => {
         });
       }
       res.status(200).json({
+        name: fetchedUser.fullName,
         message: "ok",
-        token: fetchedUser.tokens[0].token
+        token: fetchedUser.tokens[0].token,
+        role: fetchedUser.role
       });
     })
     .catch(err => {
       return res.status(203).json({
-        message: "Invalid authentication credentials!"
+        message: "Invalid authentication credentials!3"
       }); 
-    });
+    }); 
 });
 
 router.post("/token", (req, res, next) => {
@@ -95,7 +98,8 @@ router.post("/token", (req, res, next) => {
         return res.status(200).json({
           useId: user._id,
           name:user.fullName,
-          message: "good"
+          message: "good",
+          role: user.role
         });
       }
     })
@@ -107,7 +111,7 @@ router.post("/token", (req, res, next) => {
 });
  
 router.get("/userId:id/email:email", function(req, res) {  
-  User.find({ id: req.params.id ,email:req.params.email}).exec(function(err, id) {
+  User.find({ id: req.params.id}).exec(function(err, id) {
     if (err) {
       res.send(404, "Error has occurred!");
     } else {

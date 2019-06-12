@@ -1,0 +1,11 @@
+.infoText{
+  font-size: 1.3rem;
+  background-color: seashell;
+  height: 100%;
+  border-radius: 8px;
+  border: blue 1px solid;
+  margin: 0 auto;
+}
+.divInfo{
+  height: 15vh;
+}

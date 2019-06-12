@@ -1,40 +1,112 @@
-<form [formGroup]="ProductForm" (ngSubmit)="AddPruduct()">
-  <div>
-    <label for="ProductName">שם המתכון</label>
-    <input type="text" id="ProductName" formControlName="ProductName" />
+<div *ngIf="loader">
+  <app-loader></app-loader>
+</div>
+<div class="row" *ngIf="!loader">
+  <div class="col-md-4">
+    <form [formGroup]="ProductForm" (ngSubmit)="AddPruduct()">
+      <div>
+        <label for="ProductName">Name</label>
+        <input
+          class="form-control"
+          type="text"
+          id="ProductName"
+          formControlName="ProductName"
+        />
+      </div>
+      <div>
+        <button
+          class="mt-2 btn btn-primary"
+          type="button"
+          (click)="filePicker.click()"
+        >
+          Select a picture
+        </button>
+        <input
+          class="form-control"
+          type="file"
+          #filePicker
+          (change)="onImagePicked($event)"
+        />
+      </div>
+      <div
+        class="image-preview"
+        *ngIf="
+          imagePreview !== '' && imagePreview && ProductForm.get('image').valid
+        "
+      >
+        <img
+          width="100%"
+          [src]="imagePreview"
+          [alt]="ProductForm.value.title"
+        />
+      </div>
+      <div>
+        <label for="price">Price</label>
+        <input
+          class="form-control"
+          type="number"
+          id="price"
+          formControlName="price"
+        />
+      </div>
+      <div>
+        <label for="Description">Description</label>
+        <textarea
+          class="form-control"
+          type="text"
+          id="Description"
+          formControlName="Description"
+        ></textarea>
+      </div>
+      <div class="form-group" *ngIf="categorys">
+        <label for="categoryName">Category</label>
+        <select
+          formControlName="categoryName"
+          class="form-control"
+          id="categoryName"
+        >
+          <option
+            *ngFor="let category of categorys.Category"
+            [value]="category.categoryName"
+            >{{ category.categoryName }}</option
+          >
+        </select>
+        <button
+          type="button"
+          class="mt-2 btn btn-primary"
+          (click)="navigateToAddCategory()"
+        >
+          Add new Category
+        </button>
+      </div>
+      <div *ngIf="ProductBootun">
+        <button
+          type="button"
+          class="mt-2 btn btn-primary btn-lg btn-block"
+          (click)="saveUpdateProd()"
+        >
+          Update
+        </button>
+      </div>
+      <div *ngIf="!ProductBootun">
+        <button class="mt-2 btn btn-primary btn-lg btn-block" type="submit">
+          Add
+        </button>
+      </div>
+    </form>
   </div>
-  <div>
-    <button type="button" (click)="filePicker.click()">בחר תמונה</button>
-    <input type="file" #filePicker (change)="onImagePicked($event)" />
+  <div class="col-md-8">
+    <div class="float-left" *ngFor="let prod of products">
+      <div class="card">
+        <img class="imageS" [src]="prod.image" alt="" />
+        <div class="container">
+          <p>Name: {{ prod.name }}</p>
+          <p>Description: {{ prod.Description }}</p>
+          <p>Category: {{ prod.category }}</p>
+          <p>Price: {{ prod.price }}</p>
+          <button type="button" class="btn btn-primary" (click)="updateProduct(prod)">update</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <div
-    class="image-preview"
-    *ngIf="
-      imagePreview !== '' && imagePreview && ProductForm.get('image').valid
-    "
-  >
-    <img [src]="imagePreview" [alt]="ProductForm.value.title" />
-  </div>
-  <div>
-    <label for="price">Price</label>
-    <input type="number" id="price" formControlName="price" />
-  </div>
-  <div>
-    <label for="Description">Description</label>
-    <textarea
-      type="text"
-      id="Description"
-      formControlName="Description"
-    ></textarea>
-  </div>
-  <div class="form-group" *ngIf="categorys">
-      <label for="categoryName">Category</label>
-      <select formControlName="categoryName" class="form-control" id="categoryName">
-        <option *ngFor="let category of categorys.Category" [value]="category.categoryName">{{category.categoryName}}</option>
-      </select>
-      <button (click)=navigateToAddCategory()>Add new Category</button>
-    </div> 
-  <div>
-    <button type="submit">{{ProductBootun}}</button>
-  </div>
-</form>
+</div>

@@ -1,19 +1,30 @@
 const app = require("./backend/app");
 const debug = require("debug")("node-angular");
 const http = require("http");
+const fs = require('fs');
+// fs.writeFile("t.txt", "Hey there!", function(err) {
+//     if(err) {
+//         return console.log(err);
+//     }else{
+//       console.log(123);
+      
+//     }
+
+//     console.log("The file was saved!");
+// });
 
 const normalizePort = val => {
-  var port = parseInt(val, 10);
+  var port = parseInt(val, 10); 
 
   if (isNaN(port)) {
     // named pipe
-    return val;
+    return val; 
   }
 
   if (port >= 0) {
     // port number
     return port;
-  }
+  } 
 
   return false;
 };

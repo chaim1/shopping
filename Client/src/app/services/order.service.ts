@@ -17,12 +17,10 @@ export class OrderService {
   getOrderByCart(idCart):any{
     return this.httpClient.get(environment.uri+'Order/getOrderCart/'+idCart);
   }
+  getAllOrders():any{
+    return this.httpClient.get(environment.uri+'Order/getOrders');
+  }
 }
 
-// /getOrderId/:id
-
-// /getOrderCart/:id
-
-// /getOrderClient/:id
 
 

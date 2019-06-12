@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { Prouct } from 'src/app/models/prouct';
 import { ProductService } from 'src/app/services/product.service';
 import { CategoryService } from 'src/app/services/category.service';
@@ -11,26 +11,33 @@ import { Router } from '@angular/router';
   styleUrls: ['./productadd-update.component.css']
 })
 export class ProductaddUpdateComponent implements OnInit {
+  products;
   ProductForm: FormGroup;
   imagePreview;
   product: Prouct;
-  ProductBootun;
+  ProductBootun = false;
   categorys;
-  constructor(private productService: ProductService,private categoryService: CategoryService,private router: Router) {
-    this.categoryService.getAllCategory().subscribe(res=>{
+  idForUpdate;
+  loader;
+  constructor(private productService: ProductService, private categoryService: CategoryService, private router: Router, private fb: FormBuilder) {
+    this.loader = true;
+    this.categoryService.getAllCategory().subscribe(res => {
       this.categorys = res;
+    })
+    this.productService.getAllProducts().subscribe(res => {
+      this.products = res.product;
+      this.loader = false;
     })
   }
 
   ngOnInit() {
     this.ProductForm = new FormGroup({
-      ProductName: new FormControl(this.product ? this.product.name : '', { validators: [Validators.required] }),
-      image: new FormControl(this.product ? this.product.image : '', { validators: [Validators.required] }),
-      price: new FormControl(this.product ? this.product.price : '', { validators: [Validators.required] }),
-      Description: new FormControl(this.product ? this.product.Description : '', { validators: [Validators.required] }),
-      categoryName: new FormControl(this.product ? this.product.category : '', { validators: [Validators.required] })
+      ProductName: new FormControl( '', { validators: [Validators.required] }),
+      image: new FormControl( '', { validators: [Validators.required] }),
+      price: new FormControl('', { validators: [Validators.required] }),
+      Description: new FormControl('', { validators: [Validators.required] }),
+      categoryName: new FormControl('', { validators: [Validators.required] })
     });
-    this.ProductBootun = this.product ? 'Update' : 'Add Product'
   }
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
@@ -43,26 +50,46 @@ export class ProductaddUpdateComponent implements OnInit {
     reader.readAsDataURL(file);
   }
   updateProduct(p: Prouct) {
-    this.product = {
-      name: p.name,
+    this.imagePreview = p.image;
+    this.ProductForm = this.fb.group({
+      ProductName: p.name,
       image: p.image,
-      id: p.id,
-      Description: p.Description,
       price: p.price,
-      category: p.category
-    }
+      Description: p.Description,
+      categoryName: [p.category]
+    });
+    this.ProductBootun = true;
+    this.idForUpdate = p._id;
+  }
+  saveUpdateProd() {
+    this.loader = true;
+    if(typeof this.ProductForm.value.image == "object"){
+      this.productService.updateProdWithImg(this.idForUpdate,this.ProductForm.value.ProductName, this.ProductForm.value.image, this.ProductForm.value.price, this.ProductForm.value.Description, this.ProductForm.value.categoryName)
+      .subscribe(res => {
+        this.productService.getAllProducts().subscribe(res => {
+          this.products = res.product;
+          this.loader = false;
+        })
+      })
+    }else{
+    this.productService.updateProd({ prodId: this.idForUpdate, name: this.ProductForm.value.ProductName, image: this.ProductForm.value.image, price: this.ProductForm.value.price, Description: this.ProductForm.value.Description, category: this.ProductForm.value.categoryName }).subscribe(res => {
+      this.productService.getAllProducts().subscribe(res => {
+        this.products = res.product;
+        this.loader = false;
+      })
+    })}
   }
   AddPruduct() {
-    if (this.product) {
-
-    } else {
-      this.productService.addPost(this.ProductForm.value.ProductName, this.ProductForm.value.image, this.ProductForm.value.price, this.ProductForm.value.Description,this.ProductForm.value.categoryName)
-      .subscribe(res=>{
-        console.log(res);
+    this.loader = true;
+    this.productService.addPost(this.ProductForm.value.ProductName, this.ProductForm.value.image, this.ProductForm.value.price, this.ProductForm.value.Description, this.ProductForm.value.categoryName)
+      .subscribe(res => {
+        this.productService.getAllProducts().subscribe(res => {
+          this.products = res.product;
+          this.loader = false;
+        })
       })
-    }
   }
-  navigateToAddCategory(){
+  navigateToAddCategory() {
     this.router.navigate(['add-category'])
   }
 }

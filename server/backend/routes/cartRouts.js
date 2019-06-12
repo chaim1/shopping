@@ -22,7 +22,6 @@ router.post("/createCart", (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
 
       res.status(500).json({
         message: "Invalid authentication credentials!"
@@ -75,7 +74,8 @@ router.get("/getCart", function(req, res) {
 router.post("/addProd", (req, res, next) => {
   Cart.findOneAndUpdate(
     { _id: req.body.cartId },
-    {   status:2,
+    {
+      status: 2,
       $push: {
         products: {
           prodImage: req.body.prodImage,
@@ -100,12 +100,10 @@ router.post("/addProd", (req, res, next) => {
   );
 });
 
-
 router.post("/updateStatus", (req, res, next) => {
-  
   Cart.findOneAndUpdate(
     { _id: req.body.cartID },
-    {$set:{ status: 3}},
+    { $set: { status: 3 } },
     { new: true },
     (err, result) => {
       if (err) {
@@ -115,6 +113,29 @@ router.post("/updateStatus", (req, res, next) => {
       }
       res.status(201).json({
         message: "prod in!"
+      });
+    }
+  );
+});
+
+router.post("/PullProd", (req, res, next) => {
+
+  Cart.update(
+    { _id: req.body.cartId },
+    {
+      $pull: {
+        products:{_id: req.body.prodId}
+      }
+    },
+    { safe: true, multi: true },
+    (err, result) => {
+      if (err) {
+        res.status(500).json({
+          message: "error"
+        });
+      }
+      res.status(201).json({
+        message: "prod pull!"
       });
     }
   );

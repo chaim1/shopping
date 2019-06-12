@@ -19,7 +19,6 @@ router.post("/addCategory", (req, res, next) => {
       });
     })
     .catch(error => {
-      console.log(error);
 
       res.status(500).json({
         message: "Creating a category failed!"
@@ -34,7 +33,6 @@ router.get("/getCategory", function(req, res) {
     });
   })
   .catch(error => {
-    console.log(error);
     res.status(500).json({
       message: "failed!"
     });

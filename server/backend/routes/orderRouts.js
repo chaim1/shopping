@@ -27,7 +27,6 @@ router.post("/createOrder", (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
 
       res.status(500).json({
         message: "Invalid authentication credentials!"
@@ -64,7 +63,6 @@ router.get("/getOrderClient/:id", function(req, res) {
 });
 
 router.get("/getOrderCart/:id", function(req, res) {
-    console.log(req.params.id);
     
     Order.find({ idCart: req.params.id }).sort({dateOrder: -1})
     .then(order => {
@@ -76,7 +74,6 @@ router.get("/getOrderCart/:id", function(req, res) {
       res.status(500).json({
         message: "failed!"
       });
-      console.log(error);
       
     });
 });

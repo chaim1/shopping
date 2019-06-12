@@ -45,6 +45,8 @@ export class SignupComponent implements OnInit {
     } else {
       this.loader = true;
       this.signupService.findUserById(this.signupForm.value.userID, this.signupForm.value.userEmail).subscribe((res) => {
+        console.log(res);
+
         res == 'ok' ? this.stepTow = true : res == 'ID already used' ? this.errotIdUsed = true : this.errorPwdUsed = true;
         this.loader = false;
       })
@@ -54,12 +56,15 @@ export class SignupComponent implements OnInit {
     this.loader = true;
     let userData = { ...this.signupForm.value, ...this.signupFormStepTow.value };
     this.signupService.userSignup(userData).subscribe(res => {
-      console.log(res);
       window.localStorage.setItem('userToken', res.result.token);
       this.authUserService.userName.push(String(res.result.name));
       this.loader = false;
       this.authUserService.checkLoged();
-      this.router.navigate(['/'])
+      this.router.navigate(['home']);
+        setTimeout(() => {
+          this.router.navigate(['/']);
+          this.authUserService.checkLoged();
+        }, 1)
     })
   }
   navigateToLogin() {

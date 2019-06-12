@@ -77,5 +77,18 @@ export class ShoppingPageComponent implements OnInit {
     }
     this.router.navigate(['order/'+cartId]);
   }
+  deletProduct(idProduct){
+    this.loader = false;
+    this.cartService.pullProdFromCart({cartId:this.cart.cart[0]._id, prodId:idProduct}).subscribe(res=>{
+      this.cartService.getCartByCartId(this.cart.cart[0]._id).subscribe(res=>{
+        this.cart = res;
+        this.loader =true;
+        this.TotalPrice = 0;
+        for(let i =0; i <  res.cart[0].products.length; i++ ){
+          this.TotalPrice += (res.cart[0].products[i].sum * res.cart[0].products[i].price);
+        }
+      })
+    })
+  }
 }
 

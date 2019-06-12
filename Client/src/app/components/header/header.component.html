@@ -7,13 +7,13 @@
       class="d-inline-block align-top"
       alt=""
     />
-    Bootstrap
+    Shoppin chaim
   </a>
   <div *ngIf="userName[1]">
-    <p>welcome {{ userName[1] }}<a (click)="logoutUser()" class="btn btn-secondary"> LogOut </a></p>
+    <p>welcome {{ userName[1] }}<a (click)="logoutUser()" class="ml-2 btn btn-info"> LogOut </a></p>
 
   </div>
   <div *ngIf="!userName[1]">
-    <p>welcome guest <a (click)="conectClcik()" class="btn btn-secondary"> Conect </a></p>
+    <p>welcome guest <a (click)="conectClcik()" class="btn btn-info"> Conect </a></p>
   </div>
 </nav>
